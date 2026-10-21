@@ -51,8 +51,8 @@ A fully customizable website management system where you build and edit your ent
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/akadta/SITE-FORGE.git
-cd SITE-FORGE
+git clone https://github.com/akadta/PAGE-CRAFT.git
+cd PAGE-CRAFT
 ```
 
 ### 2️⃣ Setup the database
@@ -133,8 +133,7 @@ Distributed under the **MIT License**.
 
 <div align="center">
 
-### ⭐ If you like Site Forge, give it a star!
-
+### ⭐ If you like Page Craft, give it a star!
 Made with ❤️ by [akadta](https://github.com/akadta)
 
 </div>
