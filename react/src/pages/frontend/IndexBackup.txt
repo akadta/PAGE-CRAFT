@@ -1,0 +1,74 @@
+import { useEffect, useState } from "react";
+import { templateApi } from "../../api/templateApi";
+import NavbarPreview from "../../components/preview/NavbarPreview";
+import SectionRenderer from "../../components/preview/sections/SectionRenderer";
+
+export default function Index() {
+  const [sections, setSections] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await templateApi.getActive();
+        setSections(res.data.data?.sections || []);
+      } catch {
+        setSections([]);
+      }
+    })();
+  }, []);
+
+  // Smooth scroll for navbar links
+  useEffect(() => {
+    const handleClick = (e) => {
+      const a = e.target.closest("a[href^='#']");
+      if (!a) return;
+      const target = document.getElementById(a.getAttribute("href").slice(1));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
+
+  const navbar = sections.find((s) => s.type === "navbar");
+
+  return (
+    <>
+      <style>{`
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      html{scroll-behavior:smooth}
+      body{font-family:'Inter',system-ui,sans-serif;overflow-x:hidden}
+    `}</style>
+
+      {navbar && (
+        <div style={{ position: "sticky", top: 0, zIndex: 1000 }}>
+          <NavbarPreview config={navbar.config} isMobile={isMobile} />
+        </div>
+      )}
+
+      <div
+        style={{
+          marginTop:
+            navbar && navbar.config.transparent
+              ? `-${navbar.config.height || 64}px`
+              : 0,
+        }}
+      >
+        {sections
+          .filter((s) => s.type !== "navbar")
+          .map((s) => (
+            <SectionRenderer key={s.id} section={s} />
+          ))}
+      </div>
+    </>
+  );
+}
