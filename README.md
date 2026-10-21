@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧩 Site Forge
+# 🧩 Page Craft
 
 ### 🎨 Design it. Drag it. Publish it.
 
